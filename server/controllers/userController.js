@@ -1,40 +1,49 @@
-// confirmed w/ arjun the name for userModel file name and property for username and password
 const User = require('../models/userModel');
-property;
 const bcrypt = require('bcryptjs');
 
-exports.signup = async (req, res, next) => {
-  const { username, password } = req.body;
+const UserController = {
+  // create a new user in the database
+  // their information will be sent in the request body
+  signup: async (req, res, next) => {
+    try {
+      const { username, password } = req.body;
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const newUser = await User.create({
+        username: username,
+        password: hashedPassword,
+      });
+      res.locals.user = newUser;
+      return next();
+    } catch (error) {
+      const err = new Error('Error in UserController.signup: ' + error.message);
+      return next(err);
+    }
+  },
 
-  try {
-    // hash the password w/ a workfactor of 10
-    const hashedPassword = await bcrypt.hash(password, 10);
-    // create a new user and save it to mongoDB
-    const newUser = new User({
-      username: username,
-      password: hashedPassword,
-    });
-    await newUser.save();
-    next();
-  } catch (error) {
-    next(error);
-  }
+  // authenticate user login
+  // user credentials will be sent in the request body
+  login: async (req, res, next) => {
+    try {
+      const { username, password } = req.body;
+      const user = await User.findOne({ username: username });
+      if (!user) {
+        const err = new Error('Error in UserController.login: User not found');
+        return next(err);
+      }
+
+      const validPassword = await bcrypt.compare(password, user.password);
+      if (!validPassword) {
+        const err = new Error('Error in UserController.login: Wrong password');
+        return next(err);
+      }
+
+      res.locals.user = user;
+      return next();
+    } catch (error) {
+      const err = new Error('Error in UserController.login: ' + error.message);
+      return next(err);
+    }
+  },
 };
 
-exports.login = async (req, res, next) => {
-  const { username, password } = req.body;
-
-  try {
-    const user = await User.findOne({ username: username });
-    if (!user) throw new Error('User not found');
-
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) throw new Error('Wrong password');
-
-    // save user data to the request object or perform any other needed actions, then move to the next middleware
-    req.user = user;
-    next();
-  } catch (error) {
-    next(error);
-  }
-};
+module.exports = UserController;
