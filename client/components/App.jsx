@@ -1,35 +1,37 @@
 import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
-  Switch,
+  Routes, // use Routes instead of Switch
   Route,
-  Redirect,
+  Navigate,
 } from 'react-router-dom';
-import LoginSignup from './LoginSignup';
-import UserPage from './UserPage';
+import LoginSignup from './LoginSignup.jsx';
+import UserPage from './UserPage.jsx';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <Router>
-      <Switch>
-        <Route path='/login-signup'>
-          {!isLoggedIn ? (
-            <LoginSignup onLogin={() => setIsLoggedIn(true)} />
-          ) : (
-            <Redirect to='/user' />
-          )}
-        </Route>
-
-        <Route path='/user'>
-          {isLoggedIn ? <UserPage /> : <Redirect to='/login-signup' />}
-        </Route>
-
-        <Route path='*'>
-          <Redirect to='/login-signup' />
-        </Route>
-      </Switch>
+      <Routes>
+        <Route
+          path='/login-signup'
+          element={
+            !isLoggedIn ? (
+              <LoginSignup onLogin={() => setIsLoggedIn(true)} />
+            ) : (
+              <Navigate to='/user' replace />
+            )
+          }
+        />
+        <Route
+          path='/user'
+          element={
+            isLoggedIn ? <UserPage /> : <Navigate to='/login-signup' replace />
+          }
+        />
+        <Route path='*' element={<Navigate to='/login-signup' replace />} />
+      </Routes>
     </Router>
   );
 };

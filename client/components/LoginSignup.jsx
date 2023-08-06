@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // replaced useHistory with useNavigate as useHistory is deprecated
 
 const LoginSignup = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-  const history = useHistory();
+  const navigate = useNavigate(); // replaced history with navigate
 
   const login = async () => {
     if (!username || !password) {
@@ -18,7 +18,7 @@ const LoginSignup = ({ onLogin }) => {
       const response = await axios.post('/login', { username, password });
       if (response.status === 200) {
         onLogin();
-        history.push('/user');
+        navigate('/user'); // updated history.push with navigate
       } else {
         setError('Invalid credentials');
       }
