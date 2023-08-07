@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactSelect from 'react-select';
-// import ResultRow from './ResultRow'
+import ResultRow from './ResultRow'
 
 const SearchPage = () => {
     const [ categories, setCategories ] = useState([])
@@ -28,8 +28,14 @@ const SearchPage = () => {
             method:'GET',
             params: toQuery
         }
-            .then((response) => response.json)
-            .then((output) => console.log(output))
+            .then((response) => response.json())
+            .then((output) => {
+                console.log(output)
+                const rows = []
+                for(const result in output) {
+                    rows.push(<ResultRow result={props} />)
+                }
+            })
     }
 
     const categoriesOptions = [
@@ -85,6 +91,15 @@ const SearchPage = () => {
                     <ReactSelect name='tags' options={tagOptions} onChange={handleChange}/>
                 <button onClick={querySQL}>Find!</button>
             </div>
+            <table>
+                <tr>
+                    <th>Place</th>
+                    <th>Category</th>
+                    <th>Address</th>
+                    <th>Neighborhood</th>
+                </tr>
+                {rows}
+            </table>
         </div>
 
     )
