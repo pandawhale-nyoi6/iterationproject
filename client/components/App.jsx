@@ -10,6 +10,7 @@ import UserPage from './UserPage.jsx';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
 
   return (
     <Router>
@@ -18,7 +19,7 @@ const App = () => {
           path='/login-signup'
           element={
             !isLoggedIn ? (
-              <LoginSignup onLogin={() => setIsLoggedIn(true)} />
+              <LoginSignup onLogin={() => setIsLoggedIn(true)} setUser={(name) => setUsername(name)} />
             ) : (
               <Navigate to='/user' replace />
             )
@@ -27,7 +28,7 @@ const App = () => {
         <Route
           path='/user'
           element={
-            isLoggedIn ? <UserPage /> : <Navigate to='/login-signup' replace />
+            isLoggedIn ? <UserPage username={username}/> : <Navigate to='/login-signup' replace />
           }
         />
         <Route path='*' element={<Navigate to='/login-signup' replace />} />
