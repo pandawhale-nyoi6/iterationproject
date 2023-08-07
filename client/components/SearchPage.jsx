@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactSelect from 'react-select';
-import ResultRow from './ResultRow'
+import ResultRow from './ResultRow.jsx'
 
 const SearchPage = () => {
     const [ categories, setCategories ] = useState([])
