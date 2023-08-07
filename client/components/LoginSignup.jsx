@@ -8,14 +8,15 @@ const LoginSignup = ({ onLogin, setUser }) => {
   const [error, setError] = useState(null);
   const navigate = useNavigate(); // replaced history with navigate
 
-  const login = async () => {
+  const login = async (event) => {
+    event.preventDefault();
     if (!username || !password) {
       setError('All fields required');
       return;
     }
 
     try {
-      const response = await axios.post('/login', { username, password });
+      const response = await axios.post('api/login', { username, password });
       if (response.status === 200) {
         onLogin();
         setUser(username)
@@ -29,14 +30,15 @@ const LoginSignup = ({ onLogin, setUser }) => {
     }
   };
 
-  const signup = async () => {
+  const signup = async (event) => {
+    event.preventDefault();
     if (!username || !password) {
       setError('All fields required');
       return;
     }
 
     try {
-      await axios.post('/signup', { username, password });
+      await axios.post('api/signup', { username, password });
       setError('Signup successful. Please login.');
     } catch (err) {
       setError('Signup failed. Username might already be in use.');

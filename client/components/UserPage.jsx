@@ -10,8 +10,8 @@ const UserPage = ({ username }) => {
         const response = await axios.post('/api/savedList', { username });
         //server should return an array of saved places already queried for name
         if (response.status === 200) {
-        //check if it's in response.body!!
-        setSavedList(response.body.savedList)
+        //check if it's in response.data!!
+        setSavedList(response.data.savedList)
         }
     } catch (err) {
         console.error(err);
@@ -23,8 +23,8 @@ const UserPage = ({ username }) => {
             const response = await axios.post('/api/beenList', { username });
             //server should return an array of objects
             if (response.status === 200) {
-            //check if it's in response.body!
-            setTriedList(response.body)
+            //check if it's in response.data!
+            setTriedList(response.data)
             }
         } catch (err) {
             console.error(err);
@@ -82,8 +82,6 @@ const UserPage = ({ username }) => {
                 {triedRows}
             </tbody>
         </table>
-      <button onClick={login}>Login</button>
-      <button onClick={signup}>Sign Up</button>
     </div>
   );
 };

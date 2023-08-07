@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'build')));
 
 //route to SQL for any requests to the /places endpoint
-app.use('api', apiRouter)
+app.use('/api', apiRouter)
 
 // serve index.html for any unmatched route
 app.get('*', (req, res) => {
