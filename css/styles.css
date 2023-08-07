@@ -9,6 +9,22 @@ body {
   --bs-body-line-height: 1.4;
   --bs-body-bg: var(--bs-gray-100);
 }
+
+tr {
+  text-align: center;
+}
+
+
+/* .filterBar {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 50%;
+  padding: 2em;
+  justify-content: center;
+} */
+
+
 .signup-container {
   display: flex;
   justify-content: center;
@@ -46,4 +62,29 @@ body {
 .errmessage {
   color: red;
   text-align: center;
+}
+
+.lists {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.searchButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+}
+
+.button {
+  width: 50%;
+  padding: 1em;
+  margin-bottom: 1em;
+  border: none;
+  border-radius: 0.5em;
+  color: white;
+  cursor: pointer;
+  background-color: #0d6efd;
+  transition: background-color 0.3s;
 }
