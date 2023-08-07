@@ -1,7 +1,24 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const MONGO_URI = 'mongodb+srv://pinkfairy:<password>@armadillos.csx0tw6.mongodb.net/?retryWrites=true&w=majority';
+
+//contains a User collection
+
+mongoose.connect(MONGO_URI, {
+  // options for the connect method to parse the URI
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  // sets the name of the DB that our collections are part of
+  dbName: 'scratch'
+})
+  .then(() => console.log('Connected to Scratch DB!'))
+  .catch(err => console.log(err));
+
+
+
 const locationSchema = new Schema({
+    locationID: {type: String},
     score: {type: Number},
     tags: [{type: String}]
 });
