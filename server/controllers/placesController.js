@@ -7,7 +7,7 @@ placesController.getResults = async (req, res, next) => {
     try{
         const { categories, neighborhoods } = req.body
 
-        function format (array) {
+        function format(array) {
             const joined = array.map(value => `'${value}'`).join(', ');
             const formatted = '(' + joined + ')';
             return formatted;
@@ -20,7 +20,6 @@ placesController.getResults = async (req, res, next) => {
 
         const results = await db.query(selectResults);
         res.locals.searchResults = results.rows;
-        console.log(res.locals.searchResults)
         return next();
     }
     catch(err) {
