@@ -7,11 +7,11 @@ const UserPage = ({ username }) => {
     const getSaved = async () => {
     try {
         //query userRouters/saved with username in body
-        const response = await axios.post('/saved', { username });
+        const response = await axios.post('/api/savedList', { username });
         //server should return an array of saved places already queried for name
         if (response.status === 200) {
         //check if it's in response.body!!
-        setSavedList(response.body)
+        setSavedList(response.body.savedList)
         }
     } catch (err) {
         console.error(err);
@@ -20,7 +20,7 @@ const UserPage = ({ username }) => {
     const getTrys = async () => {
         try {
             //query userRouter/tried with username in body
-            const response = await axios.post('/tried', { username });
+            const response = await axios.post('/api/beenList', { username });
             //server should return an array of objects
             if (response.status === 200) {
             //check if it's in response.body!
@@ -30,10 +30,12 @@ const UserPage = ({ username }) => {
             console.error(err);
         }
     };
+
   useEffect(() => {
     getSaved();
     getTrys();
   }, [])
+
   //generate rows for saved list
   const savedRows = savedList.map(savedPlace => {
     return (
