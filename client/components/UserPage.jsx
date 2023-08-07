@@ -82,8 +82,6 @@ const UserPage = ({ username }) => {
                 {triedRows}
             </tbody>
         </table>
-      {/* <button onClick={login}>Login</button>
-      <button onClick={signup}>Sign Up</button> */}
     </div>
   );
 };
