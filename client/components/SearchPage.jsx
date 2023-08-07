@@ -1,65 +1,89 @@
 import React, { useState, useEffect } from 'react';
+import ReactSelect from 'react-select';
+// import ResultRow from './ResultRow'
 
-const UserPage = () => {
-    const [tags, updateTags] = useState([])
+const SearchPage = () => {
+    const [ categories, setCategories ] = useState([])
+    const [ neighborhoods, setNeighborhoods ] = useState([])
+    const [ tags, setTags ] = useState([])
 
-    //load tags from SQL 
-    useEffect(() => {
-        //grab list of tags from SQL (SELECT tags FROM places)
-        fetch('/api/places/tags')
-            .then((data) => data.json())
-            .then((output) => {
-                console.log(output)
-                updateTags(...output)
-                console.log(tags)
-            })
-    }, [])
-
-    const tagList = []
-    for (const tag in tags) {
-        tagList.push(<option value={tag}></option>)
+    const handleChange = (selectedOptions, actionMeta) => {
+        if (actionMeta.name === 'categories') {
+            setCategories(selectedOptions)
+        } else if (actionMeta.name === 'neighborhoods') {
+            setNeighborhoods(selectedOptions)
+        } else if (actionMeta.name === 'tags') {
+            setTags(selectedOptions)
+        }
     }
+
+    const querySQL = () => {
+        const toQuery = {
+            categories: categories.map(option => option.value),
+            neighborhoods: neighborhoods.map(option => option.value),
+            tags: tags.map(option => option.value)
+        }
+
+        fetch('api/placeSearch'), {
+            method:'GET',
+            params: toQuery
+        }
+            .then((response) => response.json)
+            .then((output) => console.log(output))
+    }
+
+    const categoriesOptions = [
+        { value:'brewery', label:'Brewery' },
+        { value:'cafe', label:'Cafe' },
+        { value:'library', label:'Library' },
+        { value:'park', label:'Park' }
+    ]
+    const neighborhoodOptions = [
+        { value:'Battery Park City', label:'Battery Park City' },
+        { value:'Chelsea', label:'Chelsea' },
+        { value:'City Hall', label:'City Hall' },
+        { value:'Clinton', label:'Clinton' },
+        { value:'East Harlem', label:'East Harlem' },
+        { value:'East Village', label:'East Village' },
+        { value:'Gramercy Park', label:'Gramercy Park' },
+        { value:'Hamilton Heights', label:'Hamilton Heights' },
+        { value:'Harlem', label:'Harlem' },
+        { value:'Lower East Side', label:'Lower East Side' },
+        { value:'Meatpacking District', label:'Meatpacking District' },
+        { value:'Midtown East', label:'Midtown East' },
+        { value:'Midtown West', label:'Midtown West' },
+        { value:'Morningside Heights', label:'Morningside Heights' },
+        { value:'Murray Hill', label:'Murray Hill' },
+        { value:'Noho/Soho', label:'Noho/Soho' },
+        { value:'Theater District', label:'Theater District' },
+        { value:'Tribeca', label:'Tribeca' },
+        { value:'Upper East Side', label:'Upper East Side' },
+        { value:'Upper West Side', label:'Upper West Side' },
+        { value:'Wall Street', label:'Wall Street' },
+        { value:'Washington Heights', label:'Washington Heights' }
+    ]
+    const tagOptions = [
+        { value:'Good Coffee', label:'Good Coffee' },
+        { value:'Strong Wifi', label:'Strong Wifi' },
+        { value:'Quiet', label:'Quiet' },
+        { value:'Social', label:'Social' },
+        { value:'Clean Bathrooms', label:'Clean Bathrooms' },
+        { value:'Abundant Outlets', label:'Abundant Outlets' },
+        { value:'Outdoor Seating', label:'Outdoor Seating' },
+        { value:'Big Group Friendly', label:'Big Group Friendly' }
+    ]
 
     return (
         <div className='searchContainer'>
             <h1>Guide</h1>
             <div className='filterBar'>
                 <label>Category</label>
-                <select name='Category' id='category' multiple>
-                    <option value='Brewery'></option>
-                    <option value='Cafe'></option>
-                    <option value='Library'></option>
-                    <option value='Park'></option>
-                </select>
+                    <ReactSelect name='categories' options={categoriesOptions} onChange={handleChange} value={categories}/>
                 <label>Neighborhood</label>
-                <select name='Neighborhood' id='neighborhood' multiple>
-                    <option value='Battery Park City'></option>
-                    <option value='Chelsea'></option>
-                    <option value='City Hall'></option>
-                    <option value='Clinton'></option>
-                    <option value='East Harlem'></option>
-                    <option value='East Village'></option>
-                    <option value='Gramercy Park'></option>
-                    <option value='Hamilton Heights'></option>
-                    <option value='Harlem'></option>
-                    <option value='Lower East Side'></option>
-                    <option value='Meatpacking District'></option>
-                    <option value='Midtown East'></option>
-                    <option value='Midtown West'></option>
-                    <option value='Morningside Heights'></option>
-                    <option value='Murray Hill'></option>
-                    <option value='Noho/Soho'></option>
-                    <option value='Theater District'></option>
-                    <option value='Tribeca'></option>
-                    <option value='Upper East Side'></option>
-                    <option value='Upper West Side'></option>
-                    <option value='Wall Street'></option>
-                    <option value='Washington Heights'></option>
-                </select>
+                    <ReactSelect name='neighborhoods' options={neighborhoodOptions} onChange={handleChange}/>
                 <label>Tags</label>
-                <select name='Tags' id='tags'>
-                    {tagList}
-                </select>
+                    <ReactSelect name='tags' options={tagOptions} onChange={handleChange}/>
+                <button onClick={querySQL}>Find!</button>
             </div>
         </div>
 
@@ -67,4 +91,4 @@ const UserPage = () => {
 
 };
 
-export default UserPage;
+export default SearchPage;
