@@ -86,4 +86,3 @@ const UserPage = ({ username }) => {
   );
 };
 export default UserPage;
-Collapse
