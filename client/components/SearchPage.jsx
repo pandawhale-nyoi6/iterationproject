@@ -1,48 +1,58 @@
 import React, { useState, useEffect } from 'react';
 import ReactSelect from 'react-select';
-import ResultRow from './ResultRow'
+import ResultRow from './ResultRow.jsx'
 
 const SearchPage = () => {
-    const [ categories, setCategories ] = useState([])
-    const [ neighborhoods, setNeighborhoods ] = useState([])
-    const [ tags, setTags ] = useState([])
+    const [categories, setCategories] = useState([]);
+    const [neighborhoods, setNeighborhoods] = useState([]);
+    const [tags, setTags] = useState([]);
+    const [results, setResults] = useState([]);
+    const rows = [];
 
     const handleChange = (selectedOptions, actionMeta) => {
         if (actionMeta.name === 'categories') {
-            setCategories(selectedOptions)
+            const selectedValues = selectedOptions.map(option => option.value);
+            setCategories([...new Set(selectedValues)]);
         } else if (actionMeta.name === 'neighborhoods') {
-            setNeighborhoods(selectedOptions)
+            const selectedValues = selectedOptions.map(option => option.value);
+            setNeighborhoods([...new Set(selectedValues)]);
         } else if (actionMeta.name === 'tags') {
-            setTags(selectedOptions)
+            const selectedValues = selectedOptions.map(option => option.value);
+            setTags([...new Set(selectedValues)]);
         }
-    }
+    };
 
     const querySQL = () => {
         const toQuery = {
-            categories: categories.map(option => option.value),
-            neighborhoods: neighborhoods.map(option => option.value),
-            tags: tags.map(option => option.value)
+            categories: categories,
+            neighborhoods: neighborhoods,
+            tags: tags
         }
-
-        fetch('api/placeSearch'), {
-            method:'GET',
-            params: toQuery
-        }
-            .then((response) => response.json())
-            .then((output) => {
-                console.log(output)
-                const rows = []
-                for(const result in output) {
-                    rows.push(<ResultRow result={props} />)
-                }
-            })
+    
+        const requestBody = JSON.stringify(toQuery);
+    
+        fetch('api/placeSearch', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: requestBody
+        })
+        .then((response) => response.json())
+        .then((output) => {
+            setResults(output)
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
     }
+    
 
     const categoriesOptions = [
-        { value:'brewery', label:'Brewery' },
-        { value:'cafe', label:'Cafe' },
-        { value:'library', label:'Library' },
-        { value:'park', label:'Park' }
+        { value:'Brewery', label:'Brewery' },
+        { value:'Cafe', label:'Cafe' },
+        { value:'Library', label:'Library' },
+        { value:'Park', label:'Park' }
     ]
     const neighborhoodOptions = [
         { value:'Battery Park City', label:'Battery Park City' },
@@ -84,21 +94,21 @@ const SearchPage = () => {
             <h1>Guide</h1>
             <div className='filterBar'>
                 <label>Category</label>
-                    <ReactSelect name='categories' options={categoriesOptions} onChange={handleChange} value={categories}/>
+                    <ReactSelect name='categories' options={categoriesOptions} value={categories.map(value => ({ value, label: value }))} onChange={handleChange} isMulti/>
                 <label>Neighborhood</label>
-                    <ReactSelect name='neighborhoods' options={neighborhoodOptions} onChange={handleChange}/>
+                    <ReactSelect name='neighborhoods' options={neighborhoodOptions} value={neighborhoods.map(value => ({ value, label: value }))} onChange={handleChange} isMulti/>
                 <label>Tags</label>
-                    <ReactSelect name='tags' options={tagOptions} onChange={handleChange}/>
+                    <ReactSelect name='tags' options={tagOptions} value={tags.map(value => ({ value, label: value }))} onChange={handleChange} isMulti/>
                 <button onClick={querySQL}>Find!</button>
             </div>
             <table>
                 <tr>
                     <th>Place</th>
-                    <th>Category</th>
                     <th>Address</th>
-                    <th>Neighborhood</th>
                 </tr>
-                {rows}
+                {results.map((result, index) => (
+                    <ResultRow key={index} result={result} />
+                ))}
             </table>
         </div>
 

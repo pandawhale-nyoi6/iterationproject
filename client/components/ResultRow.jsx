@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 const ResultRow = (props) => {
     const { place_name, category, address, neighborhood } = props.result
@@ -6,9 +6,9 @@ const ResultRow = (props) => {
     return (
         <tr>
             <td>{place_name}</td>
-            <td>{category}</td>
             <td>{address}</td>
-            <td>{neighborhood}</td>
+            <button>Rate</button>
+            <button>Save</button>
         </tr>
     );
 }
