@@ -1,7 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // import useNavigate
+
 const UserPage = ({ username }) => {
+    const navigate = useNavigate(); // Use the useNavigate hook
     const [savedList, setSavedList] = useState([]);
     const [triedList, setTriedList] = useState([]);
     const getSaved = async () => {
@@ -60,6 +63,8 @@ const UserPage = ({ username }) => {
   
   return (
     <div>
+        {/* add a button to navigate to the search page */}
+        <button onClick={() => navigate('/search')}>Go to Search Page</button>
         <table>
             <thead>
                 <tr>

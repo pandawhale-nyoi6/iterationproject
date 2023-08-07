@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import LoginSignup from './LoginSignup.jsx';
 import UserPage from './UserPage.jsx';
+import SearchPage from './SearchPage.jsx'; // import the SearchPage
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -19,7 +20,10 @@ const App = () => {
           path='/login-signup'
           element={
             !isLoggedIn ? (
-              <LoginSignup onLogin={() => setIsLoggedIn(true)} setUser={(name) => setUsername(name)} />
+              <LoginSignup
+                onLogin={() => setIsLoggedIn(true)}
+                setUser={(name) => setUsername(name)}
+              />
             ) : (
               <Navigate to='/user' replace />
             )
@@ -28,9 +32,15 @@ const App = () => {
         <Route
           path='/user'
           element={
-            isLoggedIn ? <UserPage username={username}/> : <Navigate to='/login-signup' replace />
+            isLoggedIn ? (
+              <UserPage username={username} />
+            ) : (
+              <Navigate to='/login-signup' replace />
+            )
           }
         />
+        {/* add the route for SearchPage */}
+        <Route path='/search' element={<SearchPage />} />{' '}
         <Route path='*' element={<Navigate to='/login-signup' replace />} />
       </Routes>
     </Router>
