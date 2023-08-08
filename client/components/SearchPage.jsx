@@ -7,7 +7,27 @@ const SearchPage = () => {
     const [neighborhoods, setNeighborhoods] = useState([]);
     const [tags, setTags] = useState([]);
     const [results, setResults] = useState([]);
-    const rows = [];
+    let longitude = 0;
+    let latitude = 0;
+
+    const success = (position) => {
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+        console.log(latitude, longitude)
+    }
+
+    const failure = (error) => {
+        console.log(error)
+    }
+
+    const options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0,
+    }
+
+    //get location
+    navigator.geolocation.getCurrentPosition(success, failure, options)
 
     const handleChange = (selectedOptions, actionMeta) => {
         if (actionMeta.name === 'categories') {
