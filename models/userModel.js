@@ -26,13 +26,13 @@ const locationSchema = new Schema({
 });
 
 const userSchema = new Schema({
-    firstName: {type: String},
-    lastName: {type: String},
+    email: {type: String, required: true},
+    displayName: {type: String, required: true},
     beenList: [locationSchema],
     savedList: [{type: String}],
+    loveList: [{type:String}],
     friendList: [{type: String}],
-    username: {type: String, required: true, unique: true},
-    password: {type: String, required: true}
+
 });
 
 module.exports = mongoose.model('User', userSchema);
