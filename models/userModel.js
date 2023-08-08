@@ -29,8 +29,8 @@ const userSchema = new Schema({
     email: {type: String, required: true},
     displayName: {type: String, required: true},
     beenList: [locationSchema],
-    savedList: [{type: String}],
-    loveList: [{type:String}],
+    savedList: [locationSchema],
+    loveList: [locationSchema],
     friendList: [{type: String}],
 
 });
