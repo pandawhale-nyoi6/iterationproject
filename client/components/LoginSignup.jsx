@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // replaced useHistory with useNavigate as useHistory is deprecated
+import { googleSignIn } from './Firebase.js';
 
 const LoginSignup = ({ onLogin, setUser }) => {
   const [username, setUsername] = useState('');
@@ -48,6 +49,7 @@ const LoginSignup = ({ onLogin, setUser }) => {
 
   return (
     <form className='signup-container'>
+      <button onClick = {googleSignIn}>GOOGLE AUTH!!!!!!</button>
       <div className='signup-card'>
         <div>
           <input
