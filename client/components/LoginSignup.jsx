@@ -48,7 +48,38 @@ const LoginSignup = ({ onLogin, setUser }) => {
   };
 
   return (
-   <button onClick = {googleSignIn} > GOOOGLEEE </button>
+   
+   <form className='signup-container'>
+    <button onClick = {googleSignIn} > GOOOGLEEE </button>
+   <button onClick = {googleSignIn}>GOOGLE AUTH!!!!!!</button>
+   <div className='signup-card'>
+     <div>
+       <input
+         type='text'
+         className='form-control'
+         value={username}
+         placeholder='Username'
+         onChange={(e) => setUsername(e.target.value)}
+       />
+     </div>
+     <div>
+       <input
+         type='password'
+         className='form-control'
+         placeholder='Password'
+         value={password}
+         onChange={(e) => setPassword(e.target.value)}
+       />
+     </div>
+     <button className='btn btn-primary w-100 py-2' onClick={login}>
+       Login
+     </button>
+     <button className='btn btn-primary w-100 py-2' onClick={signup}>
+       Sign Up
+     </button>
+     {error && <p className='errmessage'>{error}</p>}
+   </div>
+ </form>
   );
 };
 
