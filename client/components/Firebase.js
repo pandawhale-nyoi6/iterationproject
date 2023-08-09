@@ -24,19 +24,35 @@ export const auth = getAuth(app);
 
 const provider = new GoogleAuthProvider();
 
-export const googleSignIn = () =>{
-    signInWithPopup(auth,provider)
-    .then((result) => {
-        const name = result.user.displayName;
-        const email = result.user.email;
-        const profileP = result.user.photoURL;
+export const googleSignIn = () => {
+    return signInWithPopup(auth, provider)
+        .then((result) => {
+            // added console log to see if oAuth works
+            console.log('Complete Result:', result);
+            if (result && result.user) {
+                const name = result.user.displayName;
+                const email = result.user.email;
+                const profileP = result.user.photoURL;
 
-        localStorage.setItem("name",name)
-        localStorage.setItem("email",email)
-        localStorage.setItem("profileP",profileP)
+                // added console log to see if oAuth works
+                console.log('name :>> ', name);
+                console.log('email :>> ', email);
+                
+                localStorage.setItem("name", name);
+                localStorage.setItem("email", email);
+                localStorage.setItem("profileP",profileP)
 
-    }).catch((error) => {
-        console.log("you idiot");
-    });
+                // returns name and email for later use
+                return { name, email };
+            } else {
+                throw new Error('Unexpected result format from Firebase');
+            }
+        })
+        .catch((error) => {
+            // changed the error message below
+            console.log("Google sign-in error", error.message);
+            throw error;
+        });
 };
+
 
