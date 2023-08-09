@@ -33,9 +33,9 @@ router.post('/oauthSignup', userController.oauthSignup, (req, res, next) => {
 // })
 
 // //populate results from user initiated search
-// router.post('/placeSearch', placesController.getResults, (req, res) => {
-//   res.status(200).send(res.locals.searchResults)
-// })
+router.get('/placeSearch', placesController.queryGoogle, (req, res) => {
+  res.status(200).send(res.locals.places)
+})
 
 //populate tags for searchList
 // router.get('/searchTags')

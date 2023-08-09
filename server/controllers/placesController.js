@@ -11,7 +11,7 @@ placesController.queryGoogle = async (req, res, next) => {
         const encodeLocation = encodeURIComponent(location)
 
         if (!location) {
-            fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${input}&radius=10000&key=${process.env.PLACESAPI}`)
+            fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${input}&radius=1000&key=${process.env.PLACESAPI}`)
                 .then((response) => response.json())
                 .then((output) => {
                     res.locals.places = output.results
