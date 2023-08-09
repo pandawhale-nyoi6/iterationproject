@@ -8,6 +8,14 @@ const LoginSignup = ({ onLogin, setUser }) => {
   const handleGoogleSignIn = async (e) => {
     e.preventDefault(); // this will prevent the div from submitting
     const { name, email } = await googleSignIn();
+    await fetch('/api/oauthSignup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, displayName: name }),
+    });
+    
     setUser(email);
     onLogin();
     navigate('/user');
