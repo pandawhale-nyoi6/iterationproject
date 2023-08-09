@@ -57,7 +57,10 @@ const SearchPage = () => {
 
         fetch(`/api/placeSearch?${query}`)
             .then((response) => response.json())
-            .then((output) => console.log(output))
+            .then((output) => {
+                console.log(output)
+                setResults(output)
+            })
             .catch((err) => console.log(err))
     }
 

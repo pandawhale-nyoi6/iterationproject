@@ -5,8 +5,6 @@ const placesController = {};
 
 
 placesController.queryGoogle = async (req, res, next) => {
-    // try {
-        console.log('entering the google query')
         const { input, location } = req.query
 
         const encodeInput = encodeURIComponent(input)
