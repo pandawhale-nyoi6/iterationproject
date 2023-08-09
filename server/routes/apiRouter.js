@@ -24,18 +24,18 @@ router.post('/oauthSignup', userController.oauthSignup, (req, res, next) => {
 });
 
 // populate beenList handler, add middleware for querying mongo for beenList and SQL for location names
-router.post('/beenList', userController.beenList, (req, res) => {
-  res.status(200).json({beenList: res.locals.beenList})
-});
+// router.post('/beenList', userController.beenList, (req, res) => {
+//   res.status(200).json({beenList: res.locals.beenList})
+// });
 
-router.post('/savedList', userController.savedList, (req, res) => {
-  res.status(200).json({savedList: res.locals.savedList})
-})
+// router.post('/savedList', userController.savedList, (req, res) => {
+//   res.status(200).json({savedList: res.locals.savedList})
+// })
 
-//populate results from user initiated search
-router.post('/placeSearch', placesController.getResults, (req, res) => {
-  res.status(200).send(res.locals.searchResults)
-})
+// //populate results from user initiated search
+// router.post('/placeSearch', placesController.getResults, (req, res) => {
+//   res.status(200).send(res.locals.searchResults)
+// })
 
 //populate tags for searchList
 // router.get('/searchTags')
