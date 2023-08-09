@@ -28,9 +28,9 @@ const userSchema = new Schema({
   // added unique:true for email
   email: { type: String, required: true, unique: true },
   displayName: { type: String, required: true },
-  beenList: [locationSchema],
-  savedList: [locationSchema],
-  loveList: [locationSchema],
+  beenList: { type: Array, required: true },
+  savedList: { type: Array, required: true },
+  loveList: { type: Array, required: true },
   friendList: [{ type: String }],
 });
 
