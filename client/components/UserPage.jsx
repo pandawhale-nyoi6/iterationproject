@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // import useNavigate
 
-const UserPage = ({ username }) => {
+const UserPage = ({ userEmail }) => {
   const navigate = useNavigate(); // Use the useNavigate hook
   const [savedList, setSavedList] = useState([]);
   const [triedList, setTriedList] = useState([]);
   const getSaved = async () => {
     try {
-      //query userRouters/saved with username in body
-      const response = await axios.post('/api/savedList', { username });
+      //query userRouters/saved with userEmail in body
+      const response = await axios.post('/api/savedList', { userEmail });
       //server should return an array of saved places already queried for name
       if (response.status === 200) {
         //check if it's in response.data!!
@@ -21,8 +21,8 @@ const UserPage = ({ username }) => {
   };
   const getTrys = async () => {
     try {
-      //query userRouter/tried with username in body
-      const response = await axios.post('/api/beenList', { username });
+      //query userRouter/tried with userEmail in body
+      const response = await axios.post('/api/beenList', { userEmail });
       //server should return an array of objects
       if (response.status === 200) {
         //check if it's in response.data!
