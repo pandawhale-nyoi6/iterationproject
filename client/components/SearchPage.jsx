@@ -8,6 +8,7 @@ const SearchPage = () => {
     const [neighborhoods, setNeighborhoods] = useState([]);
     const [tags, setTags] = useState([]);
     const [results, setResults] = useState([]);
+    const [isChecked, setIsChecked] = useState(false)
     let longitude = 0;
     let latitude = 0;
 
@@ -31,8 +32,6 @@ const SearchPage = () => {
     navigator.geolocation.getCurrentPosition(success, failure, options)
 
 
-    
-
     const handleChange = (selectedOptions, actionMeta) => {
         if (actionMeta.name === 'categories') {
             const selectedValues = selectedOptions.map(option => option.value);
@@ -46,29 +45,19 @@ const SearchPage = () => {
         }
     };
 
-    const querySQL = () => {
-        const toQuery = {
-            categories: categories,
-            neighborhoods: neighborhoods,
-            tags: tags
+
+    const queryPlacesAPI = () => {
+        let query = ``
+        if (isChecked) {
+            query = `input=${encodeURIComponent(categories)}&locationbias=circle:1000@${latitude},${longitude}`
+        } else {
+            query = `input=${encodeURIComponent(`${categories} in ${neighborhoods}`)}`
         }
-    
-        const requestBody = JSON.stringify(toQuery);
-    
-        fetch('api/placeSearch', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: requestBody
-        })
-        .then((response) => response.json())
-        .then((output) => {
-            setResults(output)
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+
+        fetch(`/placeSearch?${query}`)
+            .then((response) => response.json())
+            .then((output) => console.log(output))
+            .catch((err) => console.log(err))
     }
     
 
@@ -115,16 +104,17 @@ const SearchPage = () => {
 
     return (
         <div className='searchContainer'>
-            <script async src="https://maps.googleapis.com/maps/api/js?key=${process.env.PLACESAPI}&libraries=places&callback=initMap"></script>
             <h1>Guide</h1>
             <div className='filterBar'>
                 <label>Category</label>
                     <ReactSelect name='categories' options={categoriesOptions} value={categories.map(value => ({ value, label: value }))} onChange={handleChange} isMulti/>
                 <label>Neighborhood</label>
                     <ReactSelect name='neighborhoods' options={neighborhoodOptions} value={neighborhoods.map(value => ({ value, label: value }))} onChange={handleChange} isMulti/>
+                <label>Use Current Location?</label>
+                    <input type='checkbox' checked={isChecked} onChange={() => setIsChecked((prev) => !prev)}/>
                 <label>Tags</label>
                     <ReactSelect name='tags' options={tagOptions} value={tags.map(value => ({ value, label: value }))} onChange={handleChange} isMulti/>
-                <button onClick={querySQL}>Find!</button>
+                <button onClick={queryPlacesAPI}>Find!</button>
             </div>
             <table>
                 <tr>
