@@ -11,7 +11,7 @@ import SearchPage from './SearchPage.jsx'; // import the SearchPage
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState('');
+  const [userEmail, setUserEmail] = useState(''); // renamed from username to userEmail
 
   return (
     <Router>
@@ -22,7 +22,7 @@ const App = () => {
             !isLoggedIn ? (
               <LoginSignup
                 onLogin={() => setIsLoggedIn(true)}
-                setUser={(name) => setUsername(name)}
+                setUser={(email) => setUserEmail(email)} // renamed setUsername to setUserEmail
               />
             ) : (
               <Navigate to='/user' replace />
@@ -33,14 +33,14 @@ const App = () => {
           path='/user'
           element={
             isLoggedIn ? (
-              <UserPage username={username} />
+              <UserPage email={userEmail} /> // changed prop from username to email
             ) : (
               <Navigate to='/login-signup' replace />
             )
           }
         />
         {/* add the route for SearchPage */}
-        <Route path='/search' element={<SearchPage />} />{' '}
+        <Route path='/search' element={<SearchPage />} />
         <Route path='*' element={<Navigate to='/login-signup' replace />} />
       </Routes>
     </Router>
@@ -48,3 +48,4 @@ const App = () => {
 };
 
 export default App;
+

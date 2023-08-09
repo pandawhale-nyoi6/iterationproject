@@ -1,12 +1,12 @@
 import React from 'react';
 
 const ResultRow = (props) => {
-    const { place_name, category, address, neighborhood } = props.result
+    const { name, formatted_address, opening_hours, id } = props.result
 
     return (
         <tr>
-            <td>{place_name}</td>
-            <td>{address}</td>
+            <td>{name}</td>
+            <td>{formatted_address}</td>
             <button>Rate</button>
             <button>Save</button>
         </tr>

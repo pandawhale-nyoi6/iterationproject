@@ -1,5 +1,6 @@
 const path = require('path');
 const htmlWebpackPlugin = require('html-webpack-plugin');
+const nodePolyFillPlugin = require('node-polyfill-webpack-plugin')
 
 module.exports = {
   devServer: {
@@ -28,11 +29,11 @@ module.exports = {
 
   mode: process.env.NODE_ENV,
 
-  plugins: [new htmlWebpackPlugin({ template: './index.html' })],
+  plugins: [new htmlWebpackPlugin({ template: './index.html' }), new nodePolyFillPlugin()],
 
   module: {
     rules: [
-      {
+      { 
         // for JS & JSX files
         test: /.(js|jsx)$/,
         exclude: path.resolve(__dirname, 'node_modules'), // there was a typo here (node-modules)

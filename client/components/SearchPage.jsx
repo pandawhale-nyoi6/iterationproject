@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import ReactSelect from 'react-select';
 import ResultRow from './ResultRow.jsx'
+import 'dotenv/config'
 
 const SearchPage = () => {
     const [categories, setCategories] = useState([]);
     const [neighborhoods, setNeighborhoods] = useState([]);
-    const [tags, setTags] = useState([]);
     const [results, setResults] = useState([]);
+    const [isChecked, setIsChecked] = useState(false)
     let longitude = 0;
     let latitude = 0;
 
+    //success/failure callbacks and options for the geolocation API call
     const success = (position) => {
         latitude = position.coords.latitude;
         longitude = position.coords.longitude;
@@ -22,13 +24,14 @@ const SearchPage = () => {
 
     const options = {
         enableHighAccuracy: true,
-        timeout: 5000,
+        timeout: 8000,
         maximumAge: 0,
     }
 
-    //get location
+    //geolocation API call
     navigator.geolocation.getCurrentPosition(success, failure, options)
 
+    //handle change of user input in form
     const handleChange = (selectedOptions, actionMeta) => {
         if (actionMeta.name === 'categories') {
             const selectedValues = selectedOptions.map(option => option.value);
@@ -36,44 +39,36 @@ const SearchPage = () => {
         } else if (actionMeta.name === 'neighborhoods') {
             const selectedValues = selectedOptions.map(option => option.value);
             setNeighborhoods([...new Set(selectedValues)]);
-        } else if (actionMeta.name === 'tags') {
-            const selectedValues = selectedOptions.map(option => option.value);
-            setTags([...new Set(selectedValues)]);
         }
     };
 
-    const querySQL = () => {
-        const toQuery = {
-            categories: categories,
-            neighborhoods: neighborhoods,
-            tags: tags
+    //send server a request to query the places API for results
+    const queryPlacesAPI = () => {
+        let query = ``
+        if (isChecked) {
+            query = `input=${encodeURIComponent(categories)}&location=${latitude},${longitude}`
+        } else {
+            query = `input=${encodeURIComponent(`${categories} in ${neighborhoods}`)}`
         }
-    
-        const requestBody = JSON.stringify(toQuery);
-    
-        fetch('api/placeSearch', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: requestBody
-        })
-        .then((response) => response.json())
-        .then((output) => {
-            setResults(output)
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-    }
-    
 
+        fetch(`/api/placeSearch?${query}`)
+            .then((response) => response.json())
+            .then((output) => {
+                console.log(output)
+                setResults(output)
+            })
+            .catch((err) => console.log(err))
+    }
+
+    //list of options for the dropdowns in form 
     const categoriesOptions = [
         { value:'Brewery', label:'Brewery' },
         { value:'Cafe', label:'Cafe' },
         { value:'Library', label:'Library' },
         { value:'Park', label:'Park' }
     ]
+
+    //going to try to implement autocomplete search bar for this one instead
     const neighborhoodOptions = [
         { value:'Battery Park City', label:'Battery Park City' },
         { value:'Chelsea', label:'Chelsea' },
@@ -84,6 +79,7 @@ const SearchPage = () => {
         { value:'Gramercy Park', label:'Gramercy Park' },
         { value:'Hamilton Heights', label:'Hamilton Heights' },
         { value:'Harlem', label:'Harlem' },
+        { value:'Hells Kitchen', label:'Hells Kitchen' },
         { value:'Lower East Side', label:'Lower East Side' },
         { value:'Meatpacking District', label:'Meatpacking District' },
         { value:'Midtown East', label:'Midtown East' },
@@ -98,16 +94,8 @@ const SearchPage = () => {
         { value:'Wall Street', label:'Wall Street' },
         { value:'Washington Heights', label:'Washington Heights' }
     ]
-    const tagOptions = [
-        { value:'Good Coffee', label:'Good Coffee' },
-        { value:'Strong Wifi', label:'Strong Wifi' },
-        { value:'Quiet', label:'Quiet' },
-        { value:'Social', label:'Social' },
-        { value:'Clean Bathrooms', label:'Clean Bathrooms' },
-        { value:'Abundant Outlets', label:'Abundant Outlets' },
-        { value:'Outdoor Seating', label:'Outdoor Seating' },
-        { value:'Big Group Friendly', label:'Big Group Friendly' }
-    ]
+
+    //what the user will see
 
     return (
         <div className='searchContainer'>
@@ -117,9 +105,9 @@ const SearchPage = () => {
                     <ReactSelect name='categories' options={categoriesOptions} value={categories.map(value => ({ value, label: value }))} onChange={handleChange} isMulti/>
                 <label>Neighborhood</label>
                     <ReactSelect name='neighborhoods' options={neighborhoodOptions} value={neighborhoods.map(value => ({ value, label: value }))} onChange={handleChange} isMulti/>
-                <label>Tags</label>
-                    <ReactSelect name='tags' options={tagOptions} value={tags.map(value => ({ value, label: value }))} onChange={handleChange} isMulti/>
-                <button onClick={querySQL}>Find!</button>
+                <label>Use Current Location?</label>
+                    <input type='checkbox' checked={isChecked} onChange={() => setIsChecked((prev) => !prev)}/>
+                <button onClick={queryPlacesAPI}>Find!</button>
             </div>
             <table>
                 <tr>
