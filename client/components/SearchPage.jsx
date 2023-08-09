@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactSelect from 'react-select';
 import ResultRow from './ResultRow.jsx'
+import 'dotenv/config'
 
 const SearchPage = () => {
     const [categories, setCategories] = useState([]);
@@ -28,6 +29,9 @@ const SearchPage = () => {
 
     //get location
     navigator.geolocation.getCurrentPosition(success, failure, options)
+
+
+    
 
     const handleChange = (selectedOptions, actionMeta) => {
         if (actionMeta.name === 'categories') {
@@ -111,6 +115,7 @@ const SearchPage = () => {
 
     return (
         <div className='searchContainer'>
+            <script async src="https://maps.googleapis.com/maps/api/js?key=${process.env.PLACESAPI}&libraries=places&callback=initMap"></script>
             <h1>Guide</h1>
             <div className='filterBar'>
                 <label>Category</label>
