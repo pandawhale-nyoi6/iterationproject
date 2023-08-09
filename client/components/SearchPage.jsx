@@ -6,7 +6,6 @@ import 'dotenv/config'
 const SearchPage = () => {
     const [categories, setCategories] = useState([]);
     const [neighborhoods, setNeighborhoods] = useState([]);
-    const [tags, setTags] = useState([]);
     const [results, setResults] = useState([]);
     const [isChecked, setIsChecked] = useState(false)
     let longitude = 0;
@@ -40,9 +39,6 @@ const SearchPage = () => {
         } else if (actionMeta.name === 'neighborhoods') {
             const selectedValues = selectedOptions.map(option => option.value);
             setNeighborhoods([...new Set(selectedValues)]);
-        } else if (actionMeta.name === 'tags') {
-            const selectedValues = selectedOptions.map(option => option.value);
-            setTags([...new Set(selectedValues)]);
         }
     };
 
