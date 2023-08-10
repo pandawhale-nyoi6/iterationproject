@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import ReactSelect from 'react-select';
 import ResultRow from './ResultRow.jsx';
 import 'dotenv/config';
@@ -10,7 +10,7 @@ const SearchPage = () => {
   const [isChecked, setIsChecked] = useState(false);
   let longitude = 0;
   let latitude = 0;
-
+  
   //success/failure callbacks and options for the geolocation API call
   const success = (position) => {
     latitude = position.coords.latitude;
@@ -113,49 +113,60 @@ const SearchPage = () => {
   //what the user will see
 
   return (
-    <div className='searchContainer'>
-      <h1>Guide</h1>
-      <div className='filterBar'>
-        <label>Category</label>
-        <ReactSelect
-          classNames={{
-            control: (state) => 'border border-red-300 rounded-md',
-          }}
-          name='categories'
-          options={categoriesOptions}
-          value={categories.map((value) => ({ value, label: value }))}
-          onChange={handleChange}
-          isMulti
-        />
-        <label>Neighborhood</label>
-        <ReactSelect
-          name='neighborhoods'
-          options={neighborhoodOptions}
-          value={neighborhoods.map((value) => ({ value, label: value }))}
-          onChange={handleChange}
-          isMulti
-          isDisabled={isChecked} // disable or enable based on isChecked value
-        />
-        <label>Use Current Location?</label>
-        <input
-          type='checkbox'
-          checked={isChecked}
-          onChange={() => setIsChecked((prev) => !prev)}
-        />
-        <button onClick={queryPlacesAPI}>Find!</button>
-      </div>
-      <div
+    <div className="bg-gradient-to-r from-blue-200"  style={{height: '100%', backgroundColor:"#DFEBED"}}>
+    <h1 className="font-primary text-8xl text-primary" style={{'textShadow': '2px 2px 10px gray'}}>SEARCH</h1>
+    <div className="navbar bg-base-10" style={{'display':'flex', 'flex-direction':'columns', 'justify-content':'space-around'}}>
+        <div style={{'display':'flex', 'flex-direction':'column'}}>
+            <h1 className='font-primary'>Categories</h1>
+            <div>
+                <ReactSelect
+                    name='categories'
+                    classNames={{
+                        control: () => "border border-gray-300 rounded-md bg-whitefont-primary",
+                      }}
+                    styles={{'background-color':'transparent'}}
+                    options={categoriesOptions}
+                    value={categories.map((value) => ({ value, label: value }))}
+                    onChange={handleChange}
+                    isMulti
+                />
+            </div>
+        </div>
+        <div style={{'display':'flex', 'flex-direction':'column'}}>
+            <h1 className='font-primary'>Neighborhoods</h1>
+            <div>
+                <ReactSelect
+                    name='neighborhoods'
+                    classNames={{
+                        control: () => "border border-gray-300 rounded-md bg-white",
+                      }}
+                    options={neighborhoodOptions}
+                    value={neighborhoods.map((value) => ({ value, label: value }))}
+                    onChange={handleChange}
+                    isMulti
+                    isDisabled={isChecked} // disable or enable based on isChecked value
+                />
+            </div>
+        </div>
+        
+        <div style={{'display':'flex', 'flex-direction':'columns'}}>
+            <input type="checkbox" checked={isChecked} onChange={() => setIsChecked((prev) => !prev)} className="checkbox checkbox-info" />
+            <label>Use Current Location?</label>
+        </div>
+        <button className="btn btn-large" onClick={queryPlacesAPI}>Find!</button>
+    </div>
+        <div
         className='places flex'
         style={{
           alignItems: 'center',
           flexDirection: 'column',
           flexWrap: 'nowrap',
         }}
-      >
-        {results.map((result, index) => (
-          <ResultRow key={index} result={result} />
-        ))}
-      </div>
+        >
+            {results.map((result, index) => (
+            <ResultRow key={index} result={result} />
+            ))}
+        </div>
     </div>
   );
 };

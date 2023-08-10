@@ -94,3 +94,19 @@ tr {
   background-color: #0d6efd;
   transition: background-color 0.3s;
 }
+
+.resultIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-right: 0.5rem;
+}
+
+.resultRow {
+  display: flex;
+  flex-direction: row;
+  margin: 1rem;
+}
+
+.link {
+  color: #0d6efd;
+}
