@@ -14,6 +14,12 @@ router.post('/oauthSignup', userController.oauthSignup, (req, res, next) => {
     .json({ message: 'User created or retrieved!', user: res.locals.user });
 });
 
+router.post('/saveLoc', actionController.saveTo, (req,res,next) => {
+  res.status(200).json({message: 'Document created', savedList: res.locals.user})
+})
+router.get('/getSaved', actionController.getRows, (req,res,next) => {
+  res.status(200).json({message: 'Rows acquired', savedList: res.locals.savedList["savedList"]});
+})
 
 // //populate results from user initiated search
 router.get('/placeSearch', placesController.queryGoogle, (req, res) => {

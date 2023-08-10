@@ -11,6 +11,31 @@ const ResultRow = (props) => {
     opening_hours,
   } = props.result;
 
+  const saveIt = async (name,formatted_address) => {
+    try{
+        console.log("in saveIt Function...!")
+        let dataBody = {
+            email: localStorage.email,
+            location: name ,
+            address: formatted_address
+        };
+        console.log("databody" + dataBody.email)
+        console.log("databody" + dataBody.location)
+        console.log("databody" + dataBody.address)
+        await fetch('/api/saveLoc', 
+        {method: 'POST',
+            body: JSON.stringify(dataBody),
+            headers: {
+            "Content-Type": "application/json",
+            },})
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    }catch{
+        console.log("error in the saveItfunction")
+    }
+   
+}
+
   return (
     <div
       className='collapse show bg-base-200'
@@ -22,6 +47,7 @@ const ResultRow = (props) => {
     >
       <input type='checkbox' />
       <div className='collapse-title text-xl font-medium'>{name}</div>
+      <button onClick = {() => saveIt(name,formatted_address)}>Save</button>
       <div className='collapse-content'>
         <p>{formatted_address}</p>
         <p>{formatted_phone_number}</p>
