@@ -2,51 +2,56 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // import useNavigate
 
-const UserPage = ({ userEmail }) => {
+const UserPage = () => {
   const navigate = useNavigate(); // Use the useNavigate hook
-  const [savedList, setSavedList] = useState([
-    {name: 'Capital One Cafe', address: '123 abc st'}, 
-    {name: 'Bean & Bean Chelsea', address: '123 abc st'}, 
-    {name: 'Gregorys Coffee', address: '123 abc st'}, 
-  ]);
+  const [savedList, setSavedList] = useState([]);
   const [triedList, setTriedList] = useState([]);
-  const getSaved = async () => {
-    try {
-      //query userRouters/saved with userEmail in body
-      const response = await axios.post('/api/savedList', { userEmail });
-      //server should return an array of saved places already queried for name
-      if (response.status === 200) {
-        //check if it's in response.data!!
-        setSavedList(response.data.savedList);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  const getTrys = async () => {
-    try {
-      //query userRouter/tried with userEmail in body
-      const response = await axios.post('/api/beenList', { userEmail });
-      //server should return an array of objects
-      if (response.status === 200) {
-        //check if it's in response.data!
-        setTriedList(response.data);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
+
+  const email = localStorage.getItem('email')
+  console.log('email :>> ', email);
+  async function savedPlaces() {
+    const response = await fetch('/api/getSaved', {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email}) // sending email in the body
+  });
+
+  if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+
+  const data = await response.json();
+  console.log('data :>> ', data);
+  setSavedList(data.savedList);
+  }
+
+  // const response = await fetch('http://localhost:3000/api/getSaved', {
+  //           method: "GET",
+  //           headers: {
+  //               "Content-Type": "application/json",
+  //           },
+  //           body: JSON.stringify({ email: email }) // sending email in the body
+  //       });
+
+  //       if (!response.ok) {
+  //           throw new Error(`HTTP error! Status: ${response.status}`);
+  //       }
+  //       const data = await response.json();
+  //       console.log('data :>> ', data);
+
 
   useEffect(() => {
-    getSaved();
-    getTrys();
+    savedPlaces();
   }, []);
+
 
   //generate rows for saved list
   const savedRows = savedList.map((savedPlace) => {
     return (
       <tr>
-        <td>{savedPlace.name}</td>
+        <td>{savedPlace.location}</td>
         <td>{savedPlace.address}</td>
       </tr>
     );
@@ -67,15 +72,16 @@ const UserPage = ({ userEmail }) => {
 
 
   return (
-    <div className="bg-gradient-to-r from-blue-200"  style={{height: '100%'}}> 
-      <h1 className="font-primary text-8xl text-primary" style={{'textShadow': '2px 2px 10px gray'}}>VIBE*</h1>
+    <div className="bg-gradient-to-r from-blue-200"  style={{height: '100%', backgroundColor:"#DFEBED"}}> 
+      <h1 className="font-primary text-8xl text-primary" style={{'textShadow': '2px 2px 10px gray'}}>VIBE</h1>
+      <h2></h2>
       {/* add a button to navigate to the search page */}
-      <div className='lists overflow-x-auto flex-col'>
+      <div className='lists overflow-x-auto flex-col justify-center items-center'>
       <br />
       <br />
-        <div className="collapse show bg-base-200" style={{'backgroundColor': 'rgba(0, 0, 0, 0.2)'}}>
+        <div className="collapse show bg-base-200 w-1/2" style={{'backgroundColor': 'rgba(0, 0, 0, 0.2)'}}>
           <input type="checkbox" /> 
-          <div className="collapse-title text-2xl font-medium font-primary text-white" style={{'textShadow': '1px 1px 2px black'}}>
+          <div className="collapse-title text-2xl font-medium font-primary text-white text-center" style={{'textShadow': '1px 1px 2px black'}}>
              Saved Places!
           </div>
         <div className="collapse-content"> 
@@ -93,55 +99,12 @@ const UserPage = ({ userEmail }) => {
         </div>
         </div>
         <br />
-        <div className="collapse show bg-base-200" style={{'backgroundColor': 'rgba(0, 0, 0, 0.2)'}}>
-          <input type="checkbox" /> 
-          <div className="collapse-title text-2xl font-medium font-primary text-white" style={{'textShadow': '1px 1px 2px black'}}>
-          **~ Where you've been ~**
-          </div>
-        <div className="collapse-content"> 
-        <table className='SavedTable table table-zebra font-primary rounded-sm'  style={{'backgroundColor': 'rgba(0, 0, 0, 0.1)'}}>
-        <thead>
-              <tr>
-                <th><h4>Place</h4></th>
-                <th><h4>Rating</h4></th>
-                <th><h4>Tags</h4></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th>Seven Grams Caffe</th>
-                <th>4</th>
-                <th>Chill</th>
-              </tr>
-              <tr>
-                <th>Intelligentsia Coffee Highline Coffeebar</th>
-                <th>4</th>
-                <th>Quiet</th>
-              </tr>
-              <tr>
-                <th>Stumptown Coffee Roasters</th>
-                <th>3</th>
-                <th>Chill</th>
-              </tr>
-              <tr>
-                <th>Gregorys Coffee</th>
-                <th>4</th>
-                <th>Outlets</th>
-              </tr>
-              <tr>
-                <th>Joe Coffee Company</th>
-                <th>2</th>
-                <th>Clean Bathroom</th>
-              </tr>
-            </tbody>
-        </table>
-        </div>
-        </div>
+        
         <br />
         <br />
       </div>
       <div className='searchButton'>
-        <button className='button' onClick={() => navigate('/search')}>Go to Search Page</button>
+        <button className='button text-xl' style={{backgroundColor:"#2b4450"}} onClick={() => navigate('/search')}>Go to Search Page</button>
       </div>
     </div>
   );
@@ -210,3 +173,48 @@ export default UserPage;
             //   </table>
     
             // </div>
+
+        //     <div className="collapse show bg-base-200" style={{'backgroundColor': 'rgba(0, 0, 0, 0.2)'}}>
+        //   <input type="checkbox" /> 
+        //   <div className="collapse-title text-2xl font-medium font-primary text-white" style={{'textShadow': '1px 1px 2px black'}}>
+        //   **~ Where you've been ~**
+        //   </div>
+        // <div className="collapse-content"> 
+        // <table className='SavedTable table table-zebra font-primary rounded-sm'  style={{'backgroundColor': 'rgba(0, 0, 0, 0.1)'}}>
+        // <thead>
+        //       <tr>
+        //         <th><h4>Place</h4></th>
+        //         <th><h4>Rating</h4></th>
+        //         <th><h4>Tags</h4></th>
+        //       </tr>
+        //     </thead>
+        //     <tbody>
+        //       <tr>
+        //         <th>Seven Grams Caffe</th>
+        //         <th>4</th>
+        //         <th>Chill</th>
+        //       </tr>
+        //       <tr>
+        //         <th>Intelligentsia Coffee Highline Coffeebar</th>
+        //         <th>4</th>
+        //         <th>Quiet</th>
+        //       </tr>
+        //       <tr>
+        //         <th>Stumptown Coffee Roasters</th>
+        //         <th>3</th>
+        //         <th>Chill</th>
+        //       </tr>
+        //       <tr>
+        //         <th>Gregorys Coffee</th>
+        //         <th>4</th>
+        //         <th>Outlets</th>
+        //       </tr>
+        //       <tr>
+        //         <th>Joe Coffee Company</th>
+        //         <th>2</th>
+        //         <th>Clean Bathroom</th>
+        //       </tr>
+        //     </tbody>
+        // </table>
+        // </div>
+        // </div>

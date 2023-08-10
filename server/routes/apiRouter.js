@@ -17,7 +17,7 @@ router.post('/oauthSignup', userController.oauthSignup, (req, res, next) => {
 router.post('/saveLoc', actionController.saveTo, (req,res,next) => {
   res.status(200).json({message: 'Document created', savedList: res.locals.user})
 })
-router.get('/getSaved', actionController.getRows, (req,res,next) => {
+router.post('/getSaved', actionController.getRows, (req,res,next) => {
   res.status(200).json({message: 'Rows acquired', savedList: res.locals.savedList["savedList"]});
 })
 

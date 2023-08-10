@@ -113,7 +113,7 @@ const SearchPage = () => {
   //what the user will see
 
   return (
-    <div className="bg-gradient-to-r from-blue-200"  style={{height: '100%', backgroundColor:"#DFEBED"}}>
+    <div className="bg-gradient-to-r from-blue-200 min-h-screen"  style={{'backgroundColor':"#DFEBED"}}>
     <h1 className="font-primary text-8xl text-primary" style={{'textShadow': '2px 2px 10px gray'}}>SEARCH</h1>
     <div className="navbar bg-base-10" style={{'display':'flex', 'flex-direction':'columns', 'justify-content':'space-around'}}>
         <div style={{'display':'flex', 'flex-direction':'column'}}>
