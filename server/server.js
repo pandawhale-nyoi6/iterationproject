@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const mongoose = require('mongoose');
 
 const app = express();
 const cors = require('cors');
@@ -7,6 +8,7 @@ const cors = require('cors');
 const port = 3000;
 
 const apiRouter = require('./routes/apiRouter');
+
 
 // Define your trusted origins for CORS
 const allowedOrigins = [
@@ -36,6 +38,8 @@ app.use(express.static(path.join(__dirname, 'build')));
 
 //route to SQL for any requests to the /places endpoint
 app.use('/api', apiRouter);
+
+
 
 // serve index.html for any unmatched route
 app.get('*', (req, res) => {
