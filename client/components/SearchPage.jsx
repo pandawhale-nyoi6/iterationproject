@@ -58,8 +58,19 @@ const SearchPage = () => {
     fetch(`/api/placeSearch?${query}`)
       .then((response) => response.json())
       .then((output) => {
-        console.log(output);
-        setResults(output);
+        let newResults = [];
+        for (let place of output) {
+          let id = place.place_id;
+          let reqQuery = `place_id=${id}`;
+          newResults.push(
+            fetch(`/api/placeDetails?${reqQuery}`).then((res) => res.json())
+          );
+        }
+        return Promise.all(newResults);
+      })
+      .then((updates) => {
+        console.log(updates);
+        setResults(updates);
       })
       .catch((err) => console.log(err));
   };
@@ -107,6 +118,9 @@ const SearchPage = () => {
       <div className='filterBar'>
         <label>Category</label>
         <ReactSelect
+          classNames={{
+            control: (state) => 'border border-red-300 rounded-md',
+          }}
           name='categories'
           options={categoriesOptions}
           value={categories.map((value) => ({ value, label: value }))}
@@ -130,15 +144,18 @@ const SearchPage = () => {
         />
         <button onClick={queryPlacesAPI}>Find!</button>
       </div>
-      <table>
-        <tr>
-          <th>Place</th>
-          <th>Address</th>
-        </tr>
+      <div
+        className='places flex'
+        style={{
+          alignItems: 'center',
+          flexDirection: 'column',
+          flexWrap: 'nowrap',
+        }}
+      >
         {results.map((result, index) => (
           <ResultRow key={index} result={result} />
         ))}
-      </table>
+      </div>
     </div>
   );
 };
