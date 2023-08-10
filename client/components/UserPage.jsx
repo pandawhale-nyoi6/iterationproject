@@ -72,16 +72,16 @@ const UserPage = () => {
 
 
   return (
-    <div className="bg-gradient-to-r from-blue-200"  style={{height: '100%'}}> 
-      <h1 className="font-primary text-8xl text-primary" style={{'textShadow': '2px 2px 10px gray'}}>VIBE*</h1>
+    <div className="bg-gradient-to-r from-blue-200"  style={{height: '100%', backgroundColor:"#DFEBED"}}> 
+      <h1 className="font-primary text-8xl text-primary" style={{'textShadow': '2px 2px 10px gray'}}>VIBE</h1>
       <h2></h2>
       {/* add a button to navigate to the search page */}
-      <div className='lists overflow-x-auto flex-col'>
+      <div className='lists overflow-x-auto flex-col justify-center items-center'>
       <br />
       <br />
-        <div className="collapse show bg-base-200" style={{'backgroundColor': 'rgba(0, 0, 0, 0.2)'}}>
+        <div className="collapse show bg-base-200 w-1/2" style={{'backgroundColor': 'rgba(0, 0, 0, 0.2)'}}>
           <input type="checkbox" /> 
-          <div className="collapse-title text-2xl font-medium font-primary text-white" style={{'textShadow': '1px 1px 2px black'}}>
+          <div className="collapse-title text-2xl font-medium font-primary text-white text-center" style={{'textShadow': '1px 1px 2px black'}}>
              Saved Places!
           </div>
         <div className="collapse-content"> 
@@ -99,55 +99,12 @@ const UserPage = () => {
         </div>
         </div>
         <br />
-        <div className="collapse show bg-base-200" style={{'backgroundColor': 'rgba(0, 0, 0, 0.2)'}}>
-          <input type="checkbox" /> 
-          <div className="collapse-title text-2xl font-medium font-primary text-white" style={{'textShadow': '1px 1px 2px black'}}>
-          **~ Where you've been ~**
-          </div>
-        <div className="collapse-content"> 
-        <table className='SavedTable table table-zebra font-primary rounded-sm'  style={{'backgroundColor': 'rgba(0, 0, 0, 0.1)'}}>
-        <thead>
-              <tr>
-                <th><h4>Place</h4></th>
-                <th><h4>Rating</h4></th>
-                <th><h4>Tags</h4></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th>Seven Grams Caffe</th>
-                <th>4</th>
-                <th>Chill</th>
-              </tr>
-              <tr>
-                <th>Intelligentsia Coffee Highline Coffeebar</th>
-                <th>4</th>
-                <th>Quiet</th>
-              </tr>
-              <tr>
-                <th>Stumptown Coffee Roasters</th>
-                <th>3</th>
-                <th>Chill</th>
-              </tr>
-              <tr>
-                <th>Gregorys Coffee</th>
-                <th>4</th>
-                <th>Outlets</th>
-              </tr>
-              <tr>
-                <th>Joe Coffee Company</th>
-                <th>2</th>
-                <th>Clean Bathroom</th>
-              </tr>
-            </tbody>
-        </table>
-        </div>
-        </div>
+        
         <br />
         <br />
       </div>
       <div className='searchButton'>
-        <button className='button' onClick={() => navigate('/search')}>Go to Search Page</button>
+        <button className='button text-xl' style={{backgroundColor:"#2b4450"}} onClick={() => navigate('/search')}>Go to Search Page</button>
       </div>
     </div>
   );
@@ -216,3 +173,48 @@ export default UserPage;
             //   </table>
     
             // </div>
+
+        //     <div className="collapse show bg-base-200" style={{'backgroundColor': 'rgba(0, 0, 0, 0.2)'}}>
+        //   <input type="checkbox" /> 
+        //   <div className="collapse-title text-2xl font-medium font-primary text-white" style={{'textShadow': '1px 1px 2px black'}}>
+        //   **~ Where you've been ~**
+        //   </div>
+        // <div className="collapse-content"> 
+        // <table className='SavedTable table table-zebra font-primary rounded-sm'  style={{'backgroundColor': 'rgba(0, 0, 0, 0.1)'}}>
+        // <thead>
+        //       <tr>
+        //         <th><h4>Place</h4></th>
+        //         <th><h4>Rating</h4></th>
+        //         <th><h4>Tags</h4></th>
+        //       </tr>
+        //     </thead>
+        //     <tbody>
+        //       <tr>
+        //         <th>Seven Grams Caffe</th>
+        //         <th>4</th>
+        //         <th>Chill</th>
+        //       </tr>
+        //       <tr>
+        //         <th>Intelligentsia Coffee Highline Coffeebar</th>
+        //         <th>4</th>
+        //         <th>Quiet</th>
+        //       </tr>
+        //       <tr>
+        //         <th>Stumptown Coffee Roasters</th>
+        //         <th>3</th>
+        //         <th>Chill</th>
+        //       </tr>
+        //       <tr>
+        //         <th>Gregorys Coffee</th>
+        //         <th>4</th>
+        //         <th>Outlets</th>
+        //       </tr>
+        //       <tr>
+        //         <th>Joe Coffee Company</th>
+        //         <th>2</th>
+        //         <th>Clean Bathroom</th>
+        //       </tr>
+        //     </tbody>
+        // </table>
+        // </div>
+        // </div>

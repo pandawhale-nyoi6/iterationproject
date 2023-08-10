@@ -30,7 +30,7 @@ const LoginSignup = ({ onLogin, setUser }) => {
     style={{'backgroundColor': 'rgba(0, 0, 0, 0.1)'}}>
     <div className="flex h-full items-center justify-center">
       <div className="text-white">
-        <h1 className="font-primary text-8xl text-white" style={{'textShadow': '5px 5px 20px black'}}>VIBE*</h1>
+        <h1 className="font-primary text-8xl text-white" style={{'textShadow': '5px 5px 20px black'}}>VIBE</h1>
         <h4 className="mb-6 text-xl font-semibold" style={{'textShadow': '5px 5px 20px black'}}>The world's most popular meeting app</h4>
         <button className="font-primary bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={(e) => handleGoogleSignIn(e)}>
         <p>
