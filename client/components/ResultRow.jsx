@@ -24,7 +24,7 @@ const ResultRow = (props) => {
             <td>{name}</td>
             <td>{formatted_address}</td>
             <button>Rate</button>
-            <button onclick = {saveIt}>Save</button>
+            <button onclick = {saveIt(name,formatted_address)}>Save</button>
         </tr>
     );
 }
