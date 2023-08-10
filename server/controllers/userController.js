@@ -33,62 +33,6 @@ const UserController = {
     }
   },
 
-  // below methods need to be updated given the userSchema changes
-  // //getting saved list from mongo
-  // savedList: async (req, res, next) => {
-  //   try {
-  //     const { username } = req.body;
-  //     const user = await User.findOne({ username: username });
-
-  //     if (!user) {
-  //       const err = new Error('Error in UserController.savedList: User not found');
-  //       return next(err);
-  //     }
-
-  //     //get savedList from user, should be an array of IDs
-  //     const { savedList } = user;
-
-  //     const namedSavedList = await savedList.map(placeObj => {const name = db.query(`SELECT name FROM Users where userID = ${placeObj.locationID}`);
-  //     return {
-  //       name: name,
-  //       score: placeObj.score,
-  //       tags: placeObj.tags
-  //     }
-
-  //   });
-
-  //     res.locals.savedList = namedSavedList;
-
-  //     return next();
-  //   } catch (error) {
-  //     const err = new Error('Error in UserController.login: ' + error.message);
-  //     return next(err);
-  //   }
-  // },
-
-  // beenList: async (req, res, next) => {
-  //   try {
-  //     const { username } = req.body;
-  //     const user = await User.findOne({ username: username });
-
-  //     if (!user) {
-  //       const err = new Error('Error in UserController.savedList: User not found');
-  //       return next(err);
-  //     }
-
-  //     //get beenList from user, should be an array of IDs
-  //     const { beenList } = user;
-
-  //     const namedList = await savedList.map(placeID => db.query(`SELECT name FROM Users where userID = ${placeID}`));
-
-  //     res.locals.beenList = namedList;
-
-  //     return next();
-  //   } catch (error) {
-  //     const err = new Error('Error in UserController.login: ' + error.message);
-  //     return next(err);
-  //   }
-  // }
 };
 
 module.exports = UserController;

@@ -47,9 +47,4 @@ const LoginSignup = ({ onLogin, setUser }) => {
   );
 };
 
-    // <div className='signup-container'>
-    //   <button className="font-primary bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={(e) => handleGoogleSignIn(e)}>GOOGLE AUTH!!!!!!</button>
-    // </div>
-
-    //<h2 className="mb-4 text-4xl font-semibold">Heading</h2>
 export default LoginSignup;
