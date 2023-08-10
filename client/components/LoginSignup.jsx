@@ -22,9 +22,12 @@ const LoginSignup = ({ onLogin, setUser }) => {
   };
 
   return (
+
     <div className='signup-container'>
-      <button onClick={(e) => handleGoogleSignIn(e)}>GOOGLE AUTH!!!!!!</button>
+      <button className="font-primary bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={(e) => handleGoogleSignIn(e)}>GOOGLE AUTH!!!!!!</button>
     </div>
+
+
   );
 };
 
