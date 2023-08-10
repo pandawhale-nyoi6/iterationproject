@@ -2,51 +2,56 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // import useNavigate
 
-const UserPage = ({ userEmail }) => {
+const UserPage = () => {
   const navigate = useNavigate(); // Use the useNavigate hook
-  const [savedList, setSavedList] = useState([
-    {name: 'Capital One Cafe', address: '123 abc st'}, 
-    {name: 'Bean & Bean Chelsea', address: '123 abc st'}, 
-    {name: 'Gregorys Coffee', address: '123 abc st'}, 
-  ]);
+  const [savedList, setSavedList] = useState([]);
   const [triedList, setTriedList] = useState([]);
-  const getSaved = async () => {
-    try {
-      //query userRouters/saved with userEmail in body
-      const response = await axios.post('/api/savedList', { userEmail });
-      //server should return an array of saved places already queried for name
-      if (response.status === 200) {
-        //check if it's in response.data!!
-        setSavedList(response.data.savedList);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  const getTrys = async () => {
-    try {
-      //query userRouter/tried with userEmail in body
-      const response = await axios.post('/api/beenList', { userEmail });
-      //server should return an array of objects
-      if (response.status === 200) {
-        //check if it's in response.data!
-        setTriedList(response.data);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
+
+  const email = localStorage.getItem('email')
+  console.log('email :>> ', email);
+  async function savedPlaces() {
+    const response = await fetch('/api/getSaved', {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email}) // sending email in the body
+  });
+
+  if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+
+  const data = await response.json();
+  console.log('data :>> ', data);
+  setSavedList(data.savedList);
+  }
+
+  // const response = await fetch('http://localhost:3000/api/getSaved', {
+  //           method: "GET",
+  //           headers: {
+  //               "Content-Type": "application/json",
+  //           },
+  //           body: JSON.stringify({ email: email }) // sending email in the body
+  //       });
+
+  //       if (!response.ok) {
+  //           throw new Error(`HTTP error! Status: ${response.status}`);
+  //       }
+  //       const data = await response.json();
+  //       console.log('data :>> ', data);
+
 
   useEffect(() => {
-    getSaved();
-    getTrys();
+    savedPlaces();
   }, []);
+
 
   //generate rows for saved list
   const savedRows = savedList.map((savedPlace) => {
     return (
       <tr>
-        <td>{savedPlace.name}</td>
+        <td>{savedPlace.location}</td>
         <td>{savedPlace.address}</td>
       </tr>
     );
@@ -69,6 +74,7 @@ const UserPage = ({ userEmail }) => {
   return (
     <div className="bg-gradient-to-r from-blue-200"  style={{height: '100%'}}> 
       <h1 className="font-primary text-8xl text-primary" style={{'textShadow': '2px 2px 10px gray'}}>VIBE*</h1>
+      <h2></h2>
       {/* add a button to navigate to the search page */}
       <div className='lists overflow-x-auto flex-col'>
       <br />

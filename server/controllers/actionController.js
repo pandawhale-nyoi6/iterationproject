@@ -42,7 +42,7 @@ actionController.saveTo = async (req,res,next) => {
 actionController.getRows = async (req,res,next) =>{
     try{
         let {email} = req.body;
-        console.log(email);
+        console.log('in getRows email', email);
         const result = await User.findOne({email: email}, {savedList:1});
         res.locals.savedList = result;
         console.log(result);
